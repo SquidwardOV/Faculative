@@ -1,8 +1,11 @@
 #include <iostream>
 #include <time.h>
+#include <Windows.h>
 using namespace std;
 int main()
 {
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
     srand(time(0));
     int a[4][5], * p;
     for (int i = 0; i < 4; ++i) {
