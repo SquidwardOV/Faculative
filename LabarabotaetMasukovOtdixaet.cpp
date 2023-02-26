@@ -8,6 +8,7 @@ using namespace std;
 
 struct Passenger {
     string surname;
+    string kgs;
     string initials;
     float total_weight;
     int number_of_items;
@@ -25,7 +26,7 @@ int main() {
     // Считываем информацию о пассажирах
     for (int i = 0; i < n; i++) {
         Passenger p;
-        cin >> p.surname >> p.initials >> p.total_weight >> p.number_of_items;
+        cin >> p.surname >> p.initials >> p.total_weight >> p.kgs >> p.number_of_items;
         passengers[i] = p;
     }
 
