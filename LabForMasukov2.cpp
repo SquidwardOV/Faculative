@@ -27,11 +27,8 @@ int main() {
 
     // Заполнение массива сотрудников
     // В этом примере данные считываются из файла "employees.txt"
-    ifstream inputFile("employees.txt");
-    if (!inputFile.is_open()) {
-        cout << "Ошибка открытия файла" << endl;
-        return 1;
-    }
+    ifstream inputFile;
+    inputFile.open("employees.docx");
 
     for (int i = 0; i < N; i++) {
         inputFile >> employees[i].surname >> employees[i].name >> employees[i].patronymic
