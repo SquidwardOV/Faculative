@@ -26,7 +26,7 @@ int main() {
     Employee employees[N];
 
     // Заполнение массива сотрудников
-    // В этом примере данные считываются из файла "employees.txt"
+    // В этом примере данные считываются из файла "employees.docx"
     ifstream inputFile;
     inputFile.open("employees.docx");
 
