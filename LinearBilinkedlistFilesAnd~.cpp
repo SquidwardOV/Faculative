@@ -1,6 +1,6 @@
 MyList.h
 
-  #pragma once
+
 #include <string>
 
 struct Date {
@@ -15,6 +15,7 @@ struct FileData {
     std::string specification;
     Date creationDate;
     int fileSize;
+
 };
 
 class MyList {
@@ -25,6 +26,7 @@ public:
     void insert(FileData data);
     void removeFilesWithSpecPrefix(const std::string& prefix);
     void printAllFiles();
+    void Sort();
 
 private:
     struct Node {
@@ -39,18 +41,18 @@ private:
 };
 
 
+
 MyList.cpp
 
-  #include "MyList.h"
-#include <iostream>
 
+#include <iostream>
+#include "MyList.h"
 
 MyList::MyList() {
     head = nullptr;
     tail = nullptr;
     size = 0;
 }
-
 MyList::~MyList() {
     Node* current = head;
     while (current != nullptr) {
@@ -82,12 +84,12 @@ void MyList::removeFilesWithSpecPrefix(const std::string& prefix) {
     Node* current = head;
     while (current != nullptr) {
         if (current->data.specification.compare(0, 1, prefix) == 0) {
-            if ((current->prev)!=nullptr)
+            if ((current->prev) != nullptr)
                 current->prev->next = current->next;
             else
                 head = current->next;
 
-            if ((current->next)!=nullptr)
+            if ((current->next) != nullptr)
                 current->next->prev = current->prev;
             else
                 tail = current->prev;
@@ -119,15 +121,49 @@ void MyList::printAllFiles() {
     }
 }
 
+void MyList::Sort() {
+    if (size <= 1) {
+        return;
+    }
+
+    bool swapped;
+    do {
+        swapped = false;
+        Node* current = head;
+
+        while (current->next != nullptr) {
+            if (current->data.fileName == current->next->data.fileName) {
+                // Если имена файлов совпадают, сравниваем их расширения
+                if (current->data.specification > current->next->data.specification) {
+                    FileData temp = current->data;
+                    current->data = current->next->data;
+                    current->next->data = temp;
+                    swapped = true;
+                }
+            }
+            else if (current->data.fileName > current->next->data.fileName) {
+                // Если имена файлов отличаются, сравниваем их имена
+                FileData temp = current->data;
+                current->data = current->next->data;
+                current->next->data = temp;
+                swapped = true;
+            }
+
+            current = current->next;
+        }
+    } while (swapped);
+}
+
 
 
 main.cpp
 
-  #include "MyList.h"
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <windows.h>
+#include <algorithm>
+#include "MyList.h"
 
 // Функция для разделения строки на подстроки по заданному разделителю
 std::vector<std::string> splitString(const std::string& str, char delimiter) {
@@ -141,6 +177,7 @@ std::vector<std::string> splitString(const std::string& str, char delimiter) {
 
     return result;
 }
+
 
 int main() {
     SetConsoleOutputCP(1251);
@@ -166,9 +203,9 @@ int main() {
         fileList.insert(fileData);
     }
 
+    fileList.Sort();
     // Удаление файлов с расширением, начинающейся с "~"
     fileList.removeFilesWithSpecPrefix("~");
-
     // Вывод списка файлов
     fileList.printAllFiles();
 
