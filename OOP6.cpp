@@ -1,4 +1,4 @@
-// List.h
+//list.h
 #pragma once
 
 #include <iostream>
@@ -11,6 +11,10 @@ private:
         Node* next;
 
         Node(const T& value) : data(value), next(nullptr) {}
+        Node(Node* other) {
+            data = other->data;
+            next = nullptr;
+        }
     };
 
     Node* head;
@@ -26,6 +30,18 @@ public:
         }
     }
 
+    void insert(Node* node) {
+        if (head == nullptr) {
+            head = new Node(node);
+        }
+        else {
+            Node* temp = head;
+            while (temp->next != nullptr) {
+                temp = temp->next;
+            }
+            temp->next = new Node(node);
+        }
+    }
 
     void insert(const T& value, Node* position) {
         if (position == nullptr) {
@@ -65,53 +81,52 @@ public:
         delete temp;
     }
 
-    void merge(const List& other) {
+    List* merge(const List& other) {
+        List* out = new List();
+
         Node* temp = other.head;
         Node* mainListtemp = head;
-        while (mainListtemp->next != nullptr) {
+        while (mainListtemp != nullptr) {
+            out->insert(mainListtemp);
             mainListtemp = mainListtemp->next;
         }
         while (temp != nullptr) {
-            mainListtemp->next = new Node(temp->data);
-            mainListtemp = mainListtemp->next;
+            out->insert(temp);
             temp = temp->next;
         }
+        return out;
     }
 
     // Слияние упорядоченных списков
-    void mergeSorted(const List& other) {
+    List* mergeSorted(const List& other) {
+        List* out = new List();
+
         Node* temp = other.head;
         Node* mainListtemp = head;
-        while (mainListtemp->next != nullptr) {
+        while (mainListtemp != nullptr) {
+            out->insert(mainListtemp);
             mainListtemp = mainListtemp->next;
         }
         while (temp != nullptr) {
-            mainListtemp->next = new Node(temp->data);
-            mainListtemp = mainListtemp->next;
+            out->insert(temp);
             temp = temp->next;
         }
-        temp = head;
-        if (head->next != nullptr) {
-            mainListtemp = head->next;
-            while (temp->next != nullptr) {
-                while (mainListtemp != nullptr)
-                {
-                    if (mainListtemp->data < temp->data) {
-                        T date = mainListtemp->data;
-                        mainListtemp->data = temp->data;
-                        temp->data = date;
-                    }
-                    mainListtemp = mainListtemp->next;
+        Node* iteratorI = out->head;
+        Node* iteratorJ = out->head->next;
+        while (iteratorI->next != nullptr) {
+            while (iteratorJ != nullptr) {
+                if (iteratorI->data > iteratorJ->data) {
+                    T date = iteratorI->data;
+                    iteratorI->data = iteratorJ->data;
+                    iteratorJ->data = date;
                 }
-                temp = temp->next;
-                mainListtemp = temp;
+                iteratorJ = iteratorJ->next;
+
             }
-
+            iteratorI = iteratorI->next;
+            iteratorJ = iteratorI->next;
         }
-        else {
-
-        }
-
+        return out;
 
     }
 
@@ -188,8 +203,9 @@ public:
     }
 };
 
+//main.cpp
 #include <iostream>
-#include "list.h"
+#include "List.h"
 #include <windows.h>
 
 int main() {
@@ -229,19 +245,10 @@ int main() {
     std::cout << "Список 2: " << otherList << std::endl;
 
     // Слияние двух списков
-    myList.merge(otherList);
-    std::cout << "Список после слияния с другим списком: " << myList << std::endl;
+    std::cout << "Слияние списков: " << *myList.merge(otherList) << std::endl;
 
-    // Создание третьего списка
-    List<int> sortedList;
-    sortedList.insert(1, nullptr);
-    sortedList.insert(3, nullptr);
-    sortedList.insert(5, nullptr);
-
-    // Слияние двух упорядоченных списков
-    myList.mergeSorted(sortedList);
-    std::cout << "Список после слияния с упорядоченным списком: " << myList << std::endl;
-    system("pause");
+    //Упорядоченное слияние двух списков
+    std::cout << "Упорядоченное слияние списков: "  << * myList.mergeSorted(otherList) << std::endl;
 
     return 0;
 }
