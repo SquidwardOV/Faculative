@@ -2,6 +2,7 @@
 #include <vector>
 #include <stack>
 #include <algorithm>
+#include <windows.h>
 
 using namespace std;
 
@@ -63,12 +64,13 @@ vector<vector<int>> findSCCs(vector<vector<int>>& adj) {
 }
 
 int main() {
+    SetConsoleOutputCP(1251);
     int n;
     cout << "Введите количество вершин: ";
     cin >> n;
 
     vector<vector<int>> adj(n);
-    cout << "Введите матрицу смежности (вводите 0 или 1):\n";
+    cout << "Введите матрицу смежности (вводите 0, если нет связи между вершинами или 1, если есть):\n";
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             int edge;
