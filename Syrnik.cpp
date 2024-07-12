@@ -91,13 +91,19 @@ int main() {
     outputFile << "Радиус: " << radius << endl; // Выводим радиус графа
     outputFile << "Диаметр: " << diameter << endl; // Выводим диаметр графа
     outputFile << "Центральные вершины: "; // Выводим центральные вершины
-    for (int v : centralVertices) { // Проходим по всем центральным вершинам
-        outputFile << v << " "; // Выводим центральную вершину
+    for (size_t i = 0; i < centralVertices.size(); ++i) { // Проходим по всем центральным вершинам
+        outputFile << centralVertices[i]; // Выводим центральную вершину
+        if (i != centralVertices.size() - 1) {
+            outputFile << ", "; // Выводим запятую, если это не последний элемент
+        }
     }
     outputFile << endl;
     outputFile << "Переферийные вершины: "; // Выводим периферийные вершины
-    for (int v : peripheralVertices) { // Проходим по всем периферийным вершинам
-        outputFile << v << " "; // Выводим периферийную вершину
+    for (size_t i = 0; i < peripheralVertices.size(); ++i) { // Проходим по всем периферийным вершинам
+        outputFile << peripheralVertices[i]; // Выводим периферийную вершину
+        if (i != peripheralVertices.size() - 1) {
+            outputFile << ", "; // Выводим запятую, если это не последний элемент
+        }
     }
     outputFile << endl;
 
